@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="PMS">
+      <UniqueIdentifier>{dfc7c584-99fc-4c4e-822c-e62ef47f26ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PMS\Parsing">
+      <UniqueIdentifier>{766bae01-3443-4c23-a045-9970c0c2d516}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Splitter.cpp">
+      <Filter>PMS\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="Run.cpp">
+      <Filter>PMS</Filter>
+    </ClCompile>
+    <ClCompile Include="TokenMatcher.cpp">
+      <Filter>PMS\Parsing</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Splitter.h">
+      <Filter>PMS\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="TokenMatcher.h">
+      <Filter>PMS\Parsing</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
