@@ -113,15 +113,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="IfStatement.cpp" />
     <ClCompile Include="Run.cpp" />
     <ClCompile Include="Splitter.cpp" />
-    <ClCompile Include="TokenMatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IfStatement.h" />
     <ClInclude Include="Splitter.h" />
-    <ClInclude Include="TokenMatcher.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

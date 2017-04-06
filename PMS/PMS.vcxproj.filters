@@ -15,15 +15,9 @@
     <ClCompile Include="Run.cpp">
       <Filter>PMS</Filter>
     </ClCompile>
-    <ClCompile Include="TokenMatcher.cpp">
-      <Filter>PMS\Parsing</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Splitter.h">
-      <Filter>PMS\Parsing</Filter>
-    </ClInclude>
-    <ClInclude Include="TokenMatcher.h">
       <Filter>PMS\Parsing</Filter>
     </ClInclude>
   </ItemGroup>

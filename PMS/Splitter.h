@@ -22,6 +22,11 @@ namespace PMS::Parsing
 		Unknown,
 		EndOfFile,
 
+		//Comments
+		Comment_Begin,
+		Comment_End,
+		Comment_Line,
+
 		//Arithmetic operators
 		Plus,
 		Minus,
@@ -104,9 +109,15 @@ namespace PMS::Parsing
 
 	struct SplitToken
 	{
+		TokenType eType;
 		std::size_t nLine;
-		TokenType eTokenType;
 		std::u32string sKeyword;
+	};
+
+	struct ErrorInfo
+	{
+		SplitToken sToken;
+		std::u32string sMessage;
 	};
 
 	class Splitter
@@ -128,14 +139,15 @@ namespace PMS::Parsing
 		Splitter &operator=(Splitter &&sSrc) = delete;
 		
 	public:
-		static std::vector<SplitToken> splitAll(const std::u32string &sContent);
+		static std::vector<SplitToken> splitAll(const std::u32string &sContent, std::vector<ErrorInfo> &sErrorList);
 
 	private:
 		static bool isWhitespace(char32_t nCharacter);
 		static std::size_t skipWhitespaces(std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd);
 		static bool tryParseNumericalLiteral(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList);
-		static bool tryParseStringLiteral(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList);
-		static bool tryParseKeyword(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, const char32_t *pKeyword, TokenType eTokenType);
+		static bool tryParseStringLiteral(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, std::vector<ErrorInfo> &sErrorList);
+		static bool tryParseKeyword(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, const char32_t *pKeyword, TokenType eType);
+		static bool tryMatchKeyword(std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, const char32_t *pKeyword, bool bMoveIterator = false);
 	};
 }
 

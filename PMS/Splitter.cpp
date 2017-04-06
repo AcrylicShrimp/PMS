@@ -13,7 +13,7 @@ namespace PMS::Parsing
 	std::basic_regex<char32_t> Splitter::sHexadecimalInteger{U"^[+-]0[xX][0123456789abcdefABCDEF]+"};
 	std::basic_regex<char32_t> Splitter::sDecimalReal{U"^[+-]?(?:[0123456789]*\\.)?[0123456789]+(?:[eE][+-]?[0123456789]+)?"};
 
-	std::vector<SplitToken> Splitter::splitAll(const std::u32string &sContent)
+	std::vector<SplitToken> Splitter::splitAll(const std::u32string &sContent, std::vector<ErrorInfo> &sErrorList)
 	{
 		std::size_t nLine{0u};
 		std::vector<SplitToken> sTokenList;
@@ -23,17 +23,34 @@ namespace PMS::Parsing
 
 		while (nLine += Splitter::skipWhitespaces(iIndex, iEnd), iIndex != iEnd)
 		{
-			/*
-				TODO : Place comment-processing code here.
-			*/
+			if (Splitter::tryMatchKeyword(iIndex, iEnd, U"/*", true))
+			{
+				for (auto nCurrentLine = nLine; !Splitter::tryMatchKeyword(iIndex, iEnd, U"*/", true); ++iIndex)
+					if (iIndex == iEnd)
+					{
+						sErrorList.emplace_back(TokenType::Comment_Begin, nCurrentLine, U"/*", U"Unexpected end of file reached.");
 
+						return sTokenList;
+					}
+					else if (*iIndex == U'\n')
+						++nLine;
+			}
+			else if (Splitter::tryMatchKeyword(iIndex, iEnd, U"//", true))
+			{
+				for (; iIndex != iEnd && *iIndex != U'\n'; ++iIndex);
+
+				if (iIndex == iEnd)
+					return sTokenList;
+
+				++nLine;
+			}
 
 			//Numeric literals.
 			if (Splitter::tryParseNumericalLiteral(nLine, iIndex, iEnd, sTokenList))
 				continue;
 
 			//String literals.
-			if (Splitter::tryParseStringLiteral(nLine, iIndex, iEnd, sTokenList))
+			if (Splitter::tryParseStringLiteral(nLine, iIndex, iEnd, sTokenList, sErrorList))
 				continue;
 
 			//Operators
@@ -193,16 +210,19 @@ namespace PMS::Parsing
 			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"continue", TokenType::Keyword_Continue))
 				continue;
 
-			/*
-				TODO : Place identifier-processing code here.
-			*/
-			//...
+			if (*iIndex >= 256 || *iIndex >= U'a' && *iIndex <= U'z' || *iIndex >= U'A' && *iIndex <= U'Z' || *iIndex == U'_')
+			{
+				std::u32string sIdentifier{*iIndex};
 
-			/*
-				TODO : Place error push code here.
-				Error : Unexpected line-break.
-			*/
-			
+				for (++iIndex; iIndex != iEnd && (*iIndex >= 256 || *iIndex >= U'a' && *iIndex <= U'z' || *iIndex >= U'A' && *iIndex <= U'Z' || *iIndex == U'_'); ++iIndex)
+					sIdentifier += *iIndex;
+
+				sTokenList.emplace_back(TokenType::Identifier, nLine, sIdentifier);
+
+				continue;
+			}
+
+			sErrorList.emplace_back(TokenType::Unknown, nLine, *iIndex++, U"Unexpected token.");
 		}
 
 		return sTokenList;
@@ -264,20 +284,20 @@ namespace PMS::Parsing
 			std::regex_search(iIndex, iEnd, sResult, Splitter::sHexadecimalInteger))
 		{
 			iIndex += sResult.length();
-			sTokenList.emplace_back(nLine, TokenType::Literal_Int, sResult.str());
+			sTokenList.emplace_back(TokenType::Literal_Int, nLine, sResult.str());
 			return true;
 		}
 		else if (std::regex_search(iIndex, iEnd, sResult, Splitter::sDecimalReal))
 		{
 			iIndex += sResult.length();
-			sTokenList.emplace_back(nLine, TokenType::Literal_Real, sResult.str());
+			sTokenList.emplace_back(TokenType::Literal_Real, nLine, sResult.str());
 			return true;
 		}
 
 		return false;
 	}
 
-	bool Splitter::tryParseStringLiteral(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList)
+	bool Splitter::tryParseStringLiteral(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, std::vector<ErrorInfo> &sErrorList)
 	{
 		using namespace std::literals;
 
@@ -292,17 +312,14 @@ namespace PMS::Parsing
 			if (*iCurrent == U'\'')
 			{
 				iIndex = iCurrent + 1u;
-				sTokenList.emplace_back(nLine, TokenType::Literal_String, sContent);
+				sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
 				return true;
 			}
 			else if (*iCurrent == U'\n')
 			{
 				iIndex = iCurrent;
-				sTokenList.emplace_back(nLine, TokenType::Literal_String, sContent);
-				/*
-					TODO : Place error push code here.
-					Error : Unexpected line-break.
-				*/
+				sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
+				sErrorList.emplace_back(TokenType::Literal_String, nLine, sContent, U"Unexpected line-break.");
 
 				return true;
 			}
@@ -315,22 +332,16 @@ namespace PMS::Parsing
 				if (iCurrent == iEnd)
 				{
 					iIndex = iCurrent;
-					sTokenList.emplace_back(nLine, TokenType::Literal_String, sContent);
-					/*
-						TODO : Place error push code here.
-						Error : Unexpected end of file reached.
-					*/
+					sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
+					sErrorList.emplace_back(TokenType::Literal_String, nLine, sContent, U"Unexpected end of file reached.");
 
 					return true;
 				}
 				else if (*iCurrent == U'\n')
 				{
 					iIndex = iCurrent;
-					sTokenList.emplace_back(nLine, TokenType::Literal_String, sContent);
-					/*
-						TODO : Place error push code here.
-						Error : Unexpected line-break.
-					*/
+					sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
+					sErrorList.emplace_back(TokenType::Literal_String, nLine, sContent, U"Unexpected line-break.");
 
 					return true;
 				}
@@ -383,16 +394,13 @@ namespace PMS::Parsing
 		}
 
 		iIndex = iCurrent;
-		sTokenList.emplace_back(nLine, TokenType::Literal_String, sContent);
-		/*
-			TODO : Place error push code here.
-			Error : Unexpected end of file reached.
-		*/
+		sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
+		sErrorList.emplace_back(TokenType::Literal_String, nLine, sContent, U"Unexpected end of file reached.");
 
 		return true;
 	}
 
-	bool Splitter::tryParseKeyword(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, const char32_t *pKeyword, TokenType eTokenType)
+	bool Splitter::tryParseKeyword(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, const char32_t *pKeyword, TokenType eType)
 	{
 		auto iCurrent = iIndex;
 
@@ -401,7 +409,21 @@ namespace PMS::Parsing
 				return false;
 
 		iIndex = iCurrent;
-		sTokenList.emplace_back(nLine, eTokenType, pKeyword);
+		sTokenList.emplace_back(eType, nLine, pKeyword);
+
+		return true;
+	}
+
+	bool Splitter::tryMatchKeyword(std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, const char32_t *pKeyword, bool bMoveIterator)
+	{
+		auto iCurrent = iIndex;
+
+		for (std::size_t nIndex = 0u; pKeyword[nIndex]; ++nIndex, ++iCurrent)
+			if (iCurrent == iEnd || *iCurrent != pKeyword[nIndex])
+				return false;
+
+		if (bMoveIterator)
+			iIndex = iCurrent;
 
 		return true;
 	}
