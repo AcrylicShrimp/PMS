@@ -1,0 +1,30 @@
+void fibbo(int n)
+{
+	if n <= 2 ->
+		return 1;
+		
+	return fibbo(n - 1) + fibbo(n - 2);
+}
+
+printLn('This is test text.');
+
+print('The value of fibbo(10) is ');
+printLn(fibbo(10));
+
+print('The value of fibbo(0xF) is ');
+printLn(fibbo(0xF));
+
+print('The value of fibbo(-1.e-2) is ');
+printLn(fibbo(-1.e-2));
+
+print('The value of fibbo(0b10001011010110110001) is ');
+printLn(fibbo(0b10001011010110110001));
+
+//LOL
+/*
+	0x1000
+*/
+
+:{:{}, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 'test'}
+
+repeat 5 -> append('안녕! 난 카렌이라고 해!'), wait(0);

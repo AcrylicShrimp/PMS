@@ -7,6 +7,12 @@
     <Filter Include="PMS\Parsing">
       <UniqueIdentifier>{766bae01-3443-4c23-a045-9970c0c2d516}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Res">
+      <UniqueIdentifier>{cecd7065-3dd8-405c-8b3f-9853a6ed4640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PMS\Runtime">
+      <UniqueIdentifier>{ecfed195-6d2a-4ee9-9a5a-984f7d2a3721}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Splitter.cpp">
@@ -15,10 +21,33 @@
     <ClCompile Include="Run.cpp">
       <Filter>PMS</Filter>
     </ClCompile>
+    <ClCompile Include="Instance.cpp">
+      <Filter>PMS\Runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="Executable.cpp">
+      <Filter>PMS\Runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>PMS\Runtime</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Splitter.h">
       <Filter>PMS\Parsing</Filter>
     </ClInclude>
+    <ClInclude Include="Instance.h">
+      <Filter>PMS\Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="Executable.h">
+      <Filter>PMS\Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>PMS\Runtime</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.pms">
+      <Filter>Res</Filter>
+    </None>
   </ItemGroup>
 </Project>

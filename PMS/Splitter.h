@@ -98,6 +98,7 @@ namespace PMS::Parsing
 		Keyword_Int,
 		Keyword_Real,
 		Keyword_String,
+		Keyword_List,
 		Keyword_If,
 		Keyword_Else,
 		Keyword_For,
@@ -111,22 +112,27 @@ namespace PMS::Parsing
 	{
 		TokenType eType;
 		std::size_t nLine;
-		std::u32string sKeyword;
+		std::wstring sKeyword;
 	};
 
 	struct ErrorInfo
 	{
 		SplitToken sToken;
-		std::u32string sMessage;
+		std::wstring sMessage;
 	};
+
+	using TokenList = std::vector<SplitToken>;
+	using ErrorList = std::vector<ErrorInfo>;
 
 	class Splitter
 	{
 	private:
-		static std::basic_regex<char32_t> sBinaryInteger;
-		static std::basic_regex<char32_t> sDecimalInteger;
-		static std::basic_regex<char32_t> sHexadecimalInteger;
-		static std::basic_regex<char32_t> sDecimalReal;
+		using Index = std::wstring::const_iterator;
+
+		static std::wregex sBinaryInteger;
+		static std::wregex sHexadecimalInteger;
+		static std::wregex sDecimalInteger;
+		static std::wregex sDecimalReal;
 
 	public:
 		Splitter() = delete;
@@ -139,15 +145,15 @@ namespace PMS::Parsing
 		Splitter &operator=(Splitter &&sSrc) = delete;
 		
 	public:
-		static std::vector<SplitToken> splitAll(const std::u32string &sContent, std::vector<ErrorInfo> &sErrorList);
+		static TokenList splitAll(const std::wstring &sContent, ErrorList &sErrorList);
 
 	private:
 		static bool isWhitespace(char32_t nCharacter);
-		static std::size_t skipWhitespaces(std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd);
-		static bool tryParseNumericalLiteral(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList);
-		static bool tryParseStringLiteral(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, std::vector<ErrorInfo> &sErrorList);
-		static bool tryParseKeyword(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, const char32_t *pKeyword, TokenType eType);
-		static bool tryMatchKeyword(std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, const char32_t *pKeyword, bool bMoveIterator = false);
+		static std::size_t skipWhitespaces(Index &iIndex, const Index &iEnd);
+		static bool tryParseNumericalLiteral(std::size_t nLine, Index &iIndex, const Index &iEnd, TokenList &sTokenList);
+		static bool tryParseStringLiteral(std::size_t nLine, Index &iIndex, const Index &iEnd, TokenList &sTokenList, ErrorList &sErrorList);
+		static bool tryParseKeyword(std::size_t nLine, Index &iIndex, const Index &iEnd, TokenList &sTokenList, const wchar_t *pKeyword, TokenType eType);
+		static bool tryMatchKeyword(Index &iIndex, const Index &iEnd, const wchar_t *pKeyword, bool bMoveIterator = false);
 	};
 }
 

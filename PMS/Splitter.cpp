@@ -8,14 +8,14 @@
 
 namespace PMS::Parsing
 {
-	std::basic_regex<char32_t> Splitter::sBinaryInteger{U"^[+-]0[bB][01]+"};
-	std::basic_regex<char32_t> Splitter::sDecimalInteger{U"^[+-]?[0123456789]+"};
-	std::basic_regex<char32_t> Splitter::sHexadecimalInteger{U"^[+-]0[xX][0123456789abcdefABCDEF]+"};
-	std::basic_regex<char32_t> Splitter::sDecimalReal{U"^[+-]?(?:[0123456789]*\\.)?[0123456789]+(?:[eE][+-]?[0123456789]+)?"};
+	std::wregex Splitter::sBinaryInteger{L"^0[bB][01]+"};
+	std::wregex Splitter::sHexadecimalInteger{L"^0[xX][0123456789abcdefABCDEF]+"};
+	std::wregex Splitter::sDecimalInteger{L"^[0123456789]+"};
+	std::wregex Splitter::sDecimalReal{L"^(?:(?:[0123456789]*\\.[0123456789]+)|(?:[0123456789]+\\.[0123456789]*)|(?:[0123456789]+))(?:[eE][+-]?[0123456789]+)?"};
 
-	std::vector<SplitToken> Splitter::splitAll(const std::u32string &sContent, std::vector<ErrorInfo> &sErrorList)
+	TokenList Splitter::splitAll(const std::wstring &sContent, ErrorList &sErrorList)
 	{
-		std::size_t nLine{0u};
+		std::size_t nLine{1u};
 		std::vector<SplitToken> sTokenList;
 
 		auto iIndex{sContent.cbegin()};
@@ -23,26 +23,30 @@ namespace PMS::Parsing
 
 		while (nLine += Splitter::skipWhitespaces(iIndex, iEnd), iIndex != iEnd)
 		{
-			if (Splitter::tryMatchKeyword(iIndex, iEnd, U"/*", true))
+			if (Splitter::tryMatchKeyword(iIndex, iEnd, L"/*", true))
 			{
-				for (auto nCurrentLine = nLine; !Splitter::tryMatchKeyword(iIndex, iEnd, U"*/", true); ++iIndex)
+				for (auto nCurrentLine = nLine; !Splitter::tryMatchKeyword(iIndex, iEnd, L"*/", true); ++iIndex)
 					if (iIndex == iEnd)
 					{
-						sErrorList.emplace_back(TokenType::Comment_Begin, nCurrentLine, U"/*", U"Unexpected end of file reached.");
+						sErrorList.emplace_back(ErrorInfo{SplitToken{TokenType::Comment_Begin, nCurrentLine, L"/*"}, L"Unexpected end of file reached."});
 
 						return sTokenList;
 					}
-					else if (*iIndex == U'\n')
+					else if (*iIndex == L'\n')
 						++nLine;
+
+				continue;
 			}
-			else if (Splitter::tryMatchKeyword(iIndex, iEnd, U"//", true))
+			else if (Splitter::tryMatchKeyword(iIndex, iEnd, L"//", true))
 			{
-				for (; iIndex != iEnd && *iIndex != U'\n'; ++iIndex);
+				for (; iIndex != iEnd && *iIndex != L'\n'; ++iIndex);
 
 				if (iIndex == iEnd)
 					return sTokenList;
 
 				++nLine;
+				
+				continue;
 			}
 
 			//Numeric literals.
@@ -54,175 +58,175 @@ namespace PMS::Parsing
 				continue;
 
 			//Operators
-			if (*iIndex == U'+')
+			if (*iIndex == L'+')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"++", TokenType::Plus_Double))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"++", TokenType::Plus_Double))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"+=", TokenType::Assign_Add))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"+=", TokenType::Assign_Add))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"+", TokenType::Plus))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"+", TokenType::Plus))
 					continue;
 			}
-			else if (*iIndex == U'-')
+			else if (*iIndex == L'-')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"--", TokenType::Minus_Double))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"--", TokenType::Minus_Double))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"-=", TokenType::Assign_Subtract))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"-=", TokenType::Assign_Subtract))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"->", TokenType::Arrow_Left))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"->", TokenType::Arrow_Left))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"-", TokenType::Minus))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"-", TokenType::Minus))
 					continue;
 			}
-			else if (*iIndex == U'*')
+			else if (*iIndex == L'*')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"**=", TokenType::Assign_Power))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"**=", TokenType::Assign_Power))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"**", TokenType::Asterisk_Double))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"**", TokenType::Asterisk_Double))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"*=", TokenType::Assign_Multiply))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"*=", TokenType::Assign_Multiply))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"*", TokenType::Asterisk))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"*", TokenType::Asterisk))
 					continue;
 			}
-			else if (*iIndex == U'/')
+			else if (*iIndex == L'/')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"/=", TokenType::Assign_Divide))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"/=", TokenType::Assign_Divide))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"/", TokenType::Slash))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"/", TokenType::Slash))
 					continue;
 			}
-			else if (*iIndex == U'%')
+			else if (*iIndex == L'%')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"%=", TokenType::Assign_Modulo))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"%=", TokenType::Assign_Modulo))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"%", TokenType::Percent))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"%", TokenType::Percent))
 					continue;
 			}
-			else if (*iIndex == U'!')
+			else if (*iIndex == L'!')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"!=", TokenType::Not_Equals))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"!=", TokenType::Not_Equals))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"!", TokenType::Exclamation))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"!", TokenType::Exclamation))
 					continue;
 			}
-			else if (*iIndex == U'&')
+			else if (*iIndex == L'&')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"&&", TokenType::Ampersand_Double))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"&&", TokenType::Ampersand_Double))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"&=", TokenType::Assign_And))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"&=", TokenType::Assign_And))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"&", TokenType::Ampersand))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"&", TokenType::Ampersand))
 					continue;
 			}
-			else if (*iIndex == U'|')
+			else if (*iIndex == L'|')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"||", TokenType::Vertical_Double))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"||", TokenType::Vertical_Double))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"|=", TokenType::Assign_Or))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"|=", TokenType::Assign_Or))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"|", TokenType::Vertical))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"|", TokenType::Vertical))
 					continue;
 			}
-			else if (*iIndex == U'=')
+			else if (*iIndex == L'=')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"==", TokenType::Equals))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"==", TokenType::Equals))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"=", TokenType::Assign))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"=", TokenType::Assign))
 					continue;
 			}
-			else if (*iIndex == U'<')
+			else if (*iIndex == L'<')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"<<=", TokenType::Assign_Shift_Left))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"<<=", TokenType::Assign_Shift_Left))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"<<", TokenType::Shift_Left))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"<<", TokenType::Shift_Left))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"<=", TokenType::Less_Equals))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"<=", TokenType::Less_Equals))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"<", TokenType::Angle_Bracket_Open))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"<", TokenType::Angle_Bracket_Open))
 					continue;
 			}
-			else if (*iIndex == U'>')
+			else if (*iIndex == L'>')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U">>=", TokenType::Assign_Shift_Right))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L">>=", TokenType::Assign_Shift_Right))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U">>", TokenType::Shift_Right))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L">>", TokenType::Shift_Right))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U">=", TokenType::Greater_Equals))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L">=", TokenType::Greater_Equals))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U">", TokenType::Angle_Bracket_Close))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L">", TokenType::Angle_Bracket_Close))
 					continue;
 			}
-			else if (*iIndex == U'^')
+			else if (*iIndex == L'^')
 			{
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"^=", TokenType::Assign_Xor))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"^=", TokenType::Assign_Xor))
 					continue;
-				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"^", TokenType::Circumflex))
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"^", TokenType::Circumflex))
 					continue;
 			}
 
 			//혼밥하는 오퍼들 ㅉㅉ
 			//여기! 글자 단 하나!
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"~", TokenType::Tilde))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"~", TokenType::Tilde))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"(", TokenType::Paren_Open))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"(", TokenType::Paren_Open))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U")", TokenType::Paren_Close))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L")", TokenType::Paren_Close))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"{", TokenType::Brace_Open))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"{", TokenType::Brace_Open))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"}", TokenType::Brace_Close))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"}", TokenType::Brace_Close))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"[", TokenType::Bracket_Open))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"[", TokenType::Bracket_Open))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"]", TokenType::Bracket_Close))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"]", TokenType::Bracket_Close))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U".", TokenType::Dot))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L".", TokenType::Dot))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U",", TokenType::Comma))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L",", TokenType::Comma))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U":", TokenType::Colon))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L":", TokenType::Colon))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U";", TokenType::Semicolon))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L";", TokenType::Semicolon))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"?", TokenType::Question))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"?", TokenType::Question))
 				continue;
 
 			//Keywords.
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"int", TokenType::Keyword_Int))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"int", TokenType::Keyword_Int))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"real", TokenType::Keyword_Real))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"real", TokenType::Keyword_Real))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"string", TokenType::Keyword_String))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"string", TokenType::Keyword_String))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"if", TokenType::Keyword_If))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"if", TokenType::Keyword_If))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"else", TokenType::Keyword_Else))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"else", TokenType::Keyword_Else))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"for", TokenType::Keyword_For))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"for", TokenType::Keyword_For))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"repeat", TokenType::Keyword_Repeat))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"repeat", TokenType::Keyword_Repeat))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"return", TokenType::Keyword_Return))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"return", TokenType::Keyword_Return))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"break", TokenType::Keyword_Break))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"break", TokenType::Keyword_Break))
 				continue;
-			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, U"continue", TokenType::Keyword_Continue))
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"continue", TokenType::Keyword_Continue))
 				continue;
 
-			if (*iIndex >= 256 || *iIndex >= U'a' && *iIndex <= U'z' || *iIndex >= U'A' && *iIndex <= U'Z' || *iIndex == U'_')
+			if (*iIndex >= 256 || *iIndex >= L'a' && *iIndex <= L'z' || *iIndex >= L'A' && *iIndex <= L'Z' || *iIndex == L'_')
 			{
-				std::u32string sIdentifier{*iIndex};
+				std::wstring sIdentifier{*iIndex};
 
-				for (++iIndex; iIndex != iEnd && (*iIndex >= 256 || *iIndex >= U'a' && *iIndex <= U'z' || *iIndex >= U'A' && *iIndex <= U'Z' || *iIndex == U'_'); ++iIndex)
+				for (++iIndex; iIndex != iEnd && (*iIndex >= 256 || *iIndex >= L'a' && *iIndex <= L'z' || *iIndex >= L'A' && *iIndex <= L'Z' || *iIndex == L'_'); ++iIndex)
 					sIdentifier += *iIndex;
 
-				sTokenList.emplace_back(TokenType::Identifier, nLine, sIdentifier);
+				sTokenList.emplace_back(SplitToken{TokenType::Identifier, nLine, sIdentifier});
 
 				continue;
 			}
 
-			sErrorList.emplace_back(TokenType::Unknown, nLine, *iIndex++, U"Unexpected token.");
+			sErrorList.emplace_back(ErrorInfo{SplitToken{TokenType::Unknown, nLine, std::wstring{1u, *iIndex++}}, L"Unexpected token."});
 		}
 
 		return sTokenList;
@@ -232,10 +236,10 @@ namespace PMS::Parsing
 	{
 		switch (nCharacter)
 		{
-		case U' ':
-		case U'\n':
-		case U'\r':
-		case U'\t':
+		case L' ':
+		case L'\n':
+		case L'\r':
+		case L'\t':
 			return true;
 
 		default:
@@ -243,141 +247,143 @@ namespace PMS::Parsing
 		}
 	}
 
-	std::size_t Splitter::skipWhitespaces(std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd)
+	std::size_t Splitter::skipWhitespaces(Index &iIndex, const Index &iEnd)
 	{
 		std::size_t nLine{0u};
 
 		for (; iIndex != iEnd && Splitter::isWhitespace(*iIndex); ++iIndex)
-			if (*iIndex == U'\n')
+			if (*iIndex == L'\n')
 				++nLine;
 
 		return nLine;
 	}
 
-	bool Splitter::tryParseNumericalLiteral(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList)
+	bool Splitter::tryParseNumericalLiteral(std::size_t nLine, Index &iIndex, const Index &iEnd, TokenList &sTokenList)
 	{
 		switch (*iIndex)
 		{
-		case U'+':
-		case U'-':
-		case U'0':
-		case U'1':
-		case U'2':
-		case U'3':
-		case U'4':
-		case U'5':
-		case U'6':
-		case U'7':
-		case U'8':
-		case U'9':
-		case U'.':
+		case L'0':
+		case L'1':
+		case L'2':
+		case L'3':
+		case L'4':
+		case L'5':
+		case L'6':
+		case L'7':
+		case L'8':
+		case L'9':
+		case L'.':
 			break;
 
 		default:
 			return false;
 		}
 
-		std::match_results<std::u32string::const_iterator> sResult;
+		std::match_results<Index> sResult;
 
 		if (std::regex_search(iIndex, iEnd, sResult, Splitter::sBinaryInteger) ||
-			std::regex_search(iIndex, iEnd, sResult, Splitter::sDecimalInteger) ||
 			std::regex_search(iIndex, iEnd, sResult, Splitter::sHexadecimalInteger))
 		{
 			iIndex += sResult.length();
-			sTokenList.emplace_back(TokenType::Literal_Int, nLine, sResult.str());
+			sTokenList.emplace_back(SplitToken{TokenType::Literal_Int, nLine, sResult.str()});
+
 			return true;
 		}
 		else if (std::regex_search(iIndex, iEnd, sResult, Splitter::sDecimalReal))
 		{
 			iIndex += sResult.length();
-			sTokenList.emplace_back(TokenType::Literal_Real, nLine, sResult.str());
+			sTokenList.emplace_back(SplitToken{TokenType::Literal_Real, nLine, sResult.str()});
+
+			if (std::regex_match(sTokenList.back().sKeyword, Splitter::sDecimalInteger))
+				sTokenList.back().eType = TokenType::Literal_Int;
+
 			return true;
 		}
 
 		return false;
 	}
 
-	bool Splitter::tryParseStringLiteral(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, std::vector<ErrorInfo> &sErrorList)
+	bool Splitter::tryParseStringLiteral(std::size_t nLine, Index &iIndex, const Index &iEnd, TokenList &sTokenList, ErrorList &sErrorList)
 	{
 		using namespace std::literals;
 
-		if (*iIndex != U'\'')
+		if (*iIndex != L'\'')
 			return false;
 
-		auto sContent{U""s};
-		std::u32string::const_iterator iCurrent = iIndex + 1u;
+		auto sContent{L""s};
+		Index iCurrent = iIndex + 1u;
 
 		while (iCurrent != iEnd)
 		{
-			if (*iCurrent == U'\'')
+			if (*iCurrent == L'\'')
 			{
 				iIndex = iCurrent + 1u;
-				sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
+				sTokenList.emplace_back(SplitToken{TokenType::Literal_String, nLine, sContent});
 				return true;
 			}
-			else if (*iCurrent == U'\n')
+			else if (*iCurrent == L'\n')
 			{
 				iIndex = iCurrent;
-				sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
-				sErrorList.emplace_back(TokenType::Literal_String, nLine, sContent, U"Unexpected line-break.");
+				sTokenList.emplace_back(SplitToken{TokenType::Literal_String, nLine, sContent});
+				sErrorList.emplace_back(ErrorInfo{SplitToken{TokenType::Literal_String, nLine, sContent}, L"Unexpected line-break."});
 
 				return true;
 			}
 
 			//Case : Backslash - escape character.
-			if (*iCurrent == U'\\')
+			if (*iCurrent == L'\\')
 			{
 				++iCurrent;
 
 				if (iCurrent == iEnd)
 				{
 					iIndex = iCurrent;
-					sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
-					sErrorList.emplace_back(TokenType::Literal_String, nLine, sContent, U"Unexpected end of file reached.");
+					sTokenList.emplace_back(SplitToken{TokenType::Literal_String, nLine, sContent});
+					sErrorList.emplace_back(ErrorInfo{SplitToken{TokenType::Literal_String, nLine, sContent}, L"Unexpected end of file reached."});
 
 					return true;
 				}
-				else if (*iCurrent == U'\n')
+				else if (*iCurrent == L'\n')
 				{
 					iIndex = iCurrent;
-					sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
-					sErrorList.emplace_back(TokenType::Literal_String, nLine, sContent, U"Unexpected line-break.");
+					sTokenList.emplace_back(SplitToken{TokenType::Literal_String, nLine, sContent});
+					sErrorList.emplace_back(ErrorInfo{SplitToken{TokenType::Literal_String, nLine, sContent}, L"Unexpected line-break."});
 
 					return true;
 				}
 
 				switch (*iCurrent)
 				{
-				case U'0':
-					sContent += U'\0';
+				case L'0':
+					sContent += L'\0';
 					break;
 
-				case U'a':
-					sContent += U'\a';
+				case L'a':
+					sContent += L'\a';
 					break;
 
-				case U'b':
-					sContent += U'\b';
+				case L'b':
+					sContent += L'\b';
 					break;
 
-				case U'f':
-					sContent += U'\f';
+				case L'f':
+					sContent += L'\f';
 					break;
 
-				case U'n':
-					sContent += U'\n';
+				case L'n':
+					sContent += L'\n';
 					break;
 
-				case U'r':
-					sContent += U'\r';
+				case L'r':
+					sContent += L'\r';
 					break;
 
-				case U't':
-					sContent += U'\t';
+				case L't':
+					sContent += L'\t';
 					break;
 
-				case U'v':
-					sContent += U'\v';
+				case L'v':
+					sContent += L'\v';
 					break;
 
 				default:
@@ -394,13 +400,13 @@ namespace PMS::Parsing
 		}
 
 		iIndex = iCurrent;
-		sTokenList.emplace_back(TokenType::Literal_String, nLine, sContent);
-		sErrorList.emplace_back(TokenType::Literal_String, nLine, sContent, U"Unexpected end of file reached.");
+		sTokenList.emplace_back(SplitToken{TokenType::Literal_String, nLine, sContent});
+		sErrorList.emplace_back(ErrorInfo{SplitToken{TokenType::Literal_String, nLine, sContent}, L"Unexpected end of file reached."});
 
 		return true;
 	}
 
-	bool Splitter::tryParseKeyword(std::size_t nLine, std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, std::vector<SplitToken> &sTokenList, const char32_t *pKeyword, TokenType eType)
+	bool Splitter::tryParseKeyword(std::size_t nLine, Index &iIndex, const Index &iEnd, TokenList &sTokenList, const wchar_t *pKeyword, TokenType eType)
 	{
 		auto iCurrent = iIndex;
 
@@ -409,12 +415,12 @@ namespace PMS::Parsing
 				return false;
 
 		iIndex = iCurrent;
-		sTokenList.emplace_back(eType, nLine, pKeyword);
+		sTokenList.emplace_back(SplitToken{eType, nLine, pKeyword});
 
 		return true;
 	}
 
-	bool Splitter::tryMatchKeyword(std::u32string::const_iterator &iIndex, const std::u32string::const_iterator &iEnd, const char32_t *pKeyword, bool bMoveIterator)
+	bool Splitter::tryMatchKeyword(Index &iIndex, const Index &iEnd, const wchar_t *pKeyword, bool bMoveIterator)
 	{
 		auto iCurrent = iIndex;
 

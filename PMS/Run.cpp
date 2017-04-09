@@ -7,21 +7,28 @@
 #include "Splitter.h"
 
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 
-namespace PMS
+int main()
 {
-	int main()
-	{
-		using namespace std::literals;
+	using namespace PMS;
+	using namespace std::literals;
 
-		std::vector<Parsing::ErrorInfo> sErrorList;
-		auto sTokenList{Parsing::Splitter::splitAll(U"'dsada'"s, sErrorList)};
+	std::wifstream sInput{L"test.pms", std::wifstream::in};
 
-		system("pause");
+	if (!sInput.is_open())
+		return -1;
 
-		return 0;
-	}
+	std::wstring sContent{std::istreambuf_iterator<wchar_t>{sInput}, std::istreambuf_iterator<wchar_t>{}};
+	sInput.close();
+
+	std::vector<Parsing::ErrorInfo> sErrorList;
+	auto sTokenList{Parsing::Splitter::splitAll(sContent, sErrorList)};
+
+	system("pause");
+
+	return 0;
 }

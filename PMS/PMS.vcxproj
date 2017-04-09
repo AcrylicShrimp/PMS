@@ -113,11 +113,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Executable.cpp" />
+    <ClCompile Include="Function.cpp" />
+    <ClCompile Include="Instance.cpp" />
     <ClCompile Include="Run.cpp" />
     <ClCompile Include="Splitter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Executable.h" />
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="Instance.h" />
     <ClInclude Include="Splitter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.pms" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
