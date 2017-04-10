@@ -8,12 +8,14 @@
 
 #define _CLASS_PMS_PARSING_VALUE_EXPRESSION_H
 
+#include "Executable.h"
 #include "Instance.h"
+#include "Splitter.h"
 #include "TokenIndexer.h"
 
 namespace PMS::Parsing
 {
-	class ValueExpression
+	class ValueExpression final
 	{	
 	public:
 		ValueExpression() = delete;
@@ -26,7 +28,7 @@ namespace PMS::Parsing
 		ValueExpression &operator=(ValueExpression &&sSrc) = delete;
 		
 	public:
-		bool tryMatch();
+		static bool generateInstruction(TokenIndexer sTokenIndexer, Runtime::Executable &sExecutable, ErrorList &sErrorList);
 	};
 }
 

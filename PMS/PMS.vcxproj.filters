@@ -13,6 +13,9 @@
     <Filter Include="PMS\Runtime">
       <UniqueIdentifier>{ecfed195-6d2a-4ee9-9a5a-984f7d2a3721}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PMS\Parsing\Expressions">
+      <UniqueIdentifier>{d07ec549-f21b-494a-8b4f-68374519e217}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Splitter.cpp">
@@ -27,11 +30,95 @@
     <ClCompile Include="Function.cpp">
       <Filter>PMS\Runtime</Filter>
     </ClCompile>
-    <ClCompile Include="ValueExpression.cpp">
-      <Filter>PMS\Parsing</Filter>
-    </ClCompile>
     <ClCompile Include="TokenIndexer.cpp">
       <Filter>PMS\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="AccessExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="AddExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="AmountExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="AndBitExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="AndExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="AssignExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="BackCreaseExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="BracketExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="CallExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="CastExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="CommaExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="CompareExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="Expression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontCreaseExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="ListExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="MulExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="NotExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="OrBitExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="OrExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="RangeExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="ReferenceExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="ShiftExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="SignExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="ValueExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="XorBitExpression.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment.cpp">
+      <Filter>PMS\Runtime</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,11 +134,95 @@
     <ClInclude Include="Function.h">
       <Filter>PMS\Runtime</Filter>
     </ClInclude>
-    <ClInclude Include="ValueExpression.h">
-      <Filter>PMS\Parsing</Filter>
-    </ClInclude>
     <ClInclude Include="TokenIndexer.h">
       <Filter>PMS\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="AccessExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="AddExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="AmountExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="AndBitExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="AndExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="AssignExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="BackCreaseExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="BracketExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="CallExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="CastExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="CommaExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="CompareExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="Expression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontCreaseExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="ListExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="MulExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="NotExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="OrBitExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="OrExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="RangeExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="ReferenceExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="ShiftExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="SignExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="ValueExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="XorBitExpression.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment.h">
+      <Filter>PMS\Runtime</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

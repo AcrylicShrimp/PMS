@@ -215,6 +215,8 @@ namespace PMS::Parsing
 				continue;
 			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"continue", TokenType::Keyword_Continue))
 				continue;
+			if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"ref", TokenType::Keyword_Ref))
+				continue;
 
 			if (*iIndex >= 256 || *iIndex >= L'a' && *iIndex <= L'z' || *iIndex >= L'A' && *iIndex <= L'Z' || *iIndex == L'_')
 			{

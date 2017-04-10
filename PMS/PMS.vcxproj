@@ -42,14 +42,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -83,7 +83,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <Link>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -106,27 +110,85 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AccessExpression.cpp" />
+    <ClCompile Include="AddExpression.cpp" />
+    <ClCompile Include="AmountExpression.cpp" />
+    <ClCompile Include="AndBitExpression.cpp" />
+    <ClCompile Include="AndExpression.cpp" />
+    <ClCompile Include="AssignExpression.cpp" />
+    <ClCompile Include="BackCreaseExpression.cpp" />
+    <ClCompile Include="BracketExpression.cpp" />
+    <ClCompile Include="CallExpression.cpp" />
+    <ClCompile Include="CastExpression.cpp" />
+    <ClCompile Include="CommaExpression.cpp" />
+    <ClCompile Include="CompareExpression.cpp" />
+    <ClCompile Include="ConstantExpression.cpp" />
+    <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="Expression.cpp" />
+    <ClCompile Include="FrontCreaseExpression.cpp" />
+    <ClCompile Include="FrontExpression.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="Instance.cpp" />
+    <ClCompile Include="ListExpression.cpp" />
+    <ClCompile Include="MulExpression.cpp" />
+    <ClCompile Include="NotExpression.cpp" />
+    <ClCompile Include="OrBitExpression.cpp" />
+    <ClCompile Include="OrExpression.cpp" />
+    <ClCompile Include="PowerExpression.cpp" />
+    <ClCompile Include="RangeExpression.cpp" />
+    <ClCompile Include="ReferenceExpression.cpp" />
     <ClCompile Include="Run.cpp" />
+    <ClCompile Include="ShiftExpression.cpp" />
+    <ClCompile Include="SignExpression.cpp" />
     <ClCompile Include="Splitter.cpp" />
     <ClCompile Include="TokenIndexer.cpp" />
     <ClCompile Include="ValueExpression.cpp" />
+    <ClCompile Include="XorBitExpression.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AccessExpression.h" />
+    <ClInclude Include="AddExpression.h" />
+    <ClInclude Include="AmountExpression.h" />
+    <ClInclude Include="AndBitExpression.h" />
+    <ClInclude Include="AndExpression.h" />
+    <ClInclude Include="AssignExpression.h" />
+    <ClInclude Include="BackCreaseExpression.h" />
+    <ClInclude Include="BracketExpression.h" />
+    <ClInclude Include="CallExpression.h" />
+    <ClInclude Include="CastExpression.h" />
+    <ClInclude Include="CommaExpression.h" />
+    <ClInclude Include="CompareExpression.h" />
+    <ClInclude Include="ConstantExpression.h" />
+    <ClInclude Include="Environment.h" />
     <ClInclude Include="Executable.h" />
+    <ClInclude Include="Expression.h" />
+    <ClInclude Include="FrontCreaseExpression.h" />
+    <ClInclude Include="FrontExpression.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="Instance.h" />
+    <ClInclude Include="ListExpression.h" />
+    <ClInclude Include="MulExpression.h" />
+    <ClInclude Include="NotExpression.h" />
+    <ClInclude Include="OrBitExpression.h" />
+    <ClInclude Include="OrExpression.h" />
+    <ClInclude Include="PowerExpression.h" />
+    <ClInclude Include="RangeExpression.h" />
+    <ClInclude Include="ReferenceExpression.h" />
+    <ClInclude Include="ShiftExpression.h" />
+    <ClInclude Include="SignExpression.h" />
     <ClInclude Include="Splitter.h" />
     <ClInclude Include="TokenIndexer.h" />
     <ClInclude Include="ValueExpression.h" />
+    <ClInclude Include="XorBitExpression.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="test.pms" />

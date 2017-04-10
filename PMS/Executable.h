@@ -14,23 +14,39 @@
 
 namespace PMS::Runtime
 {
-	enum class Command : uint16_t
+	enum class Instruction : uint8_t
 	{
+		CLEAR,
+		VAL,
+		CONST,
+		ASGN,
+		CAST,
+
+		JMP,
+		JZ,
+		CALL,
+		RET,
+
 		ADD,
 		SUB,
 		MUL,
 		POW,
 		DIV,
 		MOD,
-		REF,
-		PUSH,
-		POP,
-		CALL,
-		CALL_C,
+		SIGN,
 
+		EQ,
+		NEQ,
+		LE,
+		LEQ,
+		GT,
+		GTQ,
+
+		NOT,
+		AND
 	};
 
-	using Executable = std::vector<Command>;
+	using Executable = std::vector<Instruction>;
 }
 
 #endif

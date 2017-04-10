@@ -8,7 +8,8 @@
 
 namespace PMS::Runtime
 {
-	Instance::Instance()
+	Instance::Instance(const Environment &sNewEnvironment) :
+		sEnvironment{sNewEnvironment}
 	{
 		//TODO : Place your implementation of default constructor here.
 		

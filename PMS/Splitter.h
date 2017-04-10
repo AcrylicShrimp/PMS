@@ -106,7 +106,8 @@ namespace PMS::Parsing
 		Keyword_Repeat,
 		Keyword_Return,
 		Keyword_Break,
-		Keyword_Continue
+		Keyword_Continue,
+		Keyword_Ref
 	};
 
 	struct SplitToken

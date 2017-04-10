@@ -39,6 +39,7 @@ namespace PMS::Parsing
 		inline TokenIndex &current();
 		inline const TokenIndex &current() const;
 		inline bool isRemain() const;
+		inline bool isMatch(TokenType eTokenType, bool bMoveIterator = true);
 		inline void moveNext();
 		inline void moveNext(TokenIndex::difference_type nCount);
 		inline void movePrev();
@@ -60,6 +61,16 @@ namespace PMS::Parsing
 	inline bool TokenIndexer::isRemain() const
 	{
 		return this->iCurrent != this->iEnd;
+	}
+
+	inline bool TokenIndexer::isMatch(TokenType eTokenType, bool bMoveIterator = true)
+	{
+		if (!this->isRemain() || this->iCurrent->eType != eTokenType)
+			return false;
+
+		++this->iCurrent;
+
+		return true;
 	}
 
 	inline void TokenIndexer::moveNext()

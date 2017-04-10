@@ -8,6 +8,7 @@
 
 #define _CLASS_PMS_RUNTIME_INSTANCE_H
 
+#include "Environment.h"
 #include "Executable.h"
 
 #include <cstdint>
@@ -18,53 +19,24 @@
 
 namespace PMS::Runtime
 {
-	union PMSElement
-	{
-		int64_t nInt;
-		double nReal;
-		std::u32string *pString;
-		std::vector<PMSElement> *pList;
-		PMSElement *pReference;
-
-		void *pRawValue;				//For copy.
-	};
-
-	enum class PMSType : uint32_t
-	{
-		Int,
-		Real,
-		String,
-		List
-	};
-
-	using PMSStack = std::deque<std::pair<PMSElement, PMSType>>;
-
-	struct PMSEnvironment
-	{
-		std::vector<int64_t> sIntLiteralList;
-		std::vector<double> sRealLiteralList;
-		std::vector<std::u32string> sStringLiteralList;
-		//std::vector<>
-	};
+	using PMSStack = std::deque<PMSEntity>;
 
 	class Instance
 	{
 	private:
-		PMSElement sLHS;
-		PMSElement sRHS;
-
+		PMSEntity sLHS;
+		PMSEntity sRHS;
 		PMSStack sStack;
-
+		const Environment &sEnvironment;
 		
 	public:
-		Instance();
+		Instance(const Environment &sNewEnvironment);
 		Instance(const Instance &sSrc);
 		Instance(Instance &&sSrc);
 		~Instance();
 		/*
 			TODO : Place your other constructors here.
 		*/
-		
 		
 	public:
 		Instance &operator=(const Instance &sSrc);
