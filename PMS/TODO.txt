@@ -1,0 +1,14 @@
+
+1. 새 타입 만들 것 - Module
+
+/* PMS */
+
+math.sign();
+
+tm = testmodule.test1.firsttest.test;
+tm.foo(); // == testmodule.test1.firsttest.test.foo();
+
+/* C++ */
+
+auto &sModule = Environment.addModule(U"testmodule");
+sModule.addModule();

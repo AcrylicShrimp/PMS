@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <deque>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -43,10 +44,14 @@ namespace PMS::Runtime
 		PMSData sData;
 	};
 
+	using FunctionMap = std::unordered_map<std::u32string, Executable>;
+
 	class Environment
 	{
 	private:
 		std::vector<PMSEntity> sLiteralList;
+		FunctionMap sGlobalFunctionMap;
+		std::unordered_map<std::u32string, FunctionMap> sPackagedFunctionMap;
 		
 	public:
 		Environment() = default;

@@ -234,5 +234,8 @@
     <Text Include="PMS_STRUCTURE_EBNF.txt">
       <Filter>Res</Filter>
     </Text>
+    <Text Include="TODO.txt">
+      <Filter>Res</Filter>
+    </Text>
   </ItemGroup>
 </Project>
