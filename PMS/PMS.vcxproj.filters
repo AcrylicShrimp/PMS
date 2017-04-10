@@ -59,4 +59,9 @@
       <Filter>Res</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="PMS_STRUCTURE_EBNF.txt">
+      <Filter>Res</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
