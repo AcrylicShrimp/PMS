@@ -8,6 +8,8 @@
 
 #define _CLASS_PMS_RUNTIME_INSTANCE_H
 
+#include "Executable.h"
+
 #include <cstdint>
 #include <deque>
 #include <string>
@@ -36,6 +38,14 @@ namespace PMS::Runtime
 	};
 
 	using PMSStack = std::deque<std::pair<PMSElement, PMSType>>;
+
+	struct PMSEnvironment
+	{
+		std::vector<int64_t> sIntLiteralList;
+		std::vector<double> sRealLiteralList;
+		std::vector<std::u32string> sStringLiteralList;
+		//std::vector<>
+	};
 
 	class Instance
 	{

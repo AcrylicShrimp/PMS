@@ -69,6 +69,7 @@ namespace PMS::Parsing
 		Assign_And,
 		Assign_Xor,
 		Assign_Or,
+		Assign_Link,
 
 		//Parentheses
 		Paren_Open,

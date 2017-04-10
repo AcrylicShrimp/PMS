@@ -143,6 +143,8 @@ namespace PMS::Parsing
 					continue;
 				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"<=", TokenType::Less_Equals))
 					continue;
+				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"<-", TokenType::Assign_Link))
+					continue;
 				if (Splitter::tryParseKeyword(nLine, iIndex, iEnd, sTokenList, L"<", TokenType::Angle_Bracket_Open))
 					continue;
 			}

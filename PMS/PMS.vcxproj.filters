@@ -24,11 +24,14 @@
     <ClCompile Include="Instance.cpp">
       <Filter>PMS\Runtime</Filter>
     </ClCompile>
-    <ClCompile Include="Executable.cpp">
-      <Filter>PMS\Runtime</Filter>
-    </ClCompile>
     <ClCompile Include="Function.cpp">
       <Filter>PMS\Runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="ValueExpression.cpp">
+      <Filter>PMS\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="TokenIndexer.cpp">
+      <Filter>PMS\Parsing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +46,12 @@
     </ClInclude>
     <ClInclude Include="Function.h">
       <Filter>PMS\Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="ValueExpression.h">
+      <Filter>PMS\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="TokenIndexer.h">
+      <Filter>PMS\Parsing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

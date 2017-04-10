@@ -4,29 +4,29 @@
 	Created by AcrylicShrimp.
 */
 
-#include "Executable.h"
+#include "ValueExpression.h"
 
-namespace PMS::Runtime
+namespace PMS::Parsing
 {
-	Executable::Executable()
+	ValueExpression::ValueExpression()
 	{
 		//TODO : Place your implementation of default constructor here.
 		
 	}
 	
-	Executable::Executable(const Executable &sSrc)
+	ValueExpression::ValueExpression(const ValueExpression &sSrc)
 	{
 		//TODO : Place your implementation of copy constructor here.
 		
 	}
 	
-	Executable::Executable(Executable &&sSrc)
+	ValueExpression::ValueExpression(ValueExpression &&sSrc)
 	{
 		//TODO : Place your implementation of move constructor here.
 		
 	}
 	
-	Executable::~Executable()
+	ValueExpression::~ValueExpression()
 	{
 		//TODO : Place your implementation of destructor here.
 		
@@ -37,7 +37,7 @@ namespace PMS::Runtime
 	*/
 	
 	
-	Executable &Executable::operator=(const Executable &sSrc)
+	ValueExpression &ValueExpression::operator=(const ValueExpression &sSrc)
 	{
 		if(&sSrc == this)
 			return *this;
@@ -48,7 +48,7 @@ namespace PMS::Runtime
 		return *this;
 	}
 	
-	Executable &Executable::operator=(Executable &&sSrc)
+	ValueExpression &ValueExpression::operator=(ValueExpression &&sSrc)
 	{
 		if(&sSrc == this)
 			return *this;

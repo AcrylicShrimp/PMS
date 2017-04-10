@@ -30,29 +30,7 @@ namespace PMS::Runtime
 
 	};
 
-	using CommandList = std::vector<Command>;
-
-	class Executable
-	{
-	private:
-
-
-	public:
-		Executable();
-		Executable(const Executable &sSrc);
-		Executable(Executable &&sSrc);
-		~Executable();
-
-	public:
-		Executable &operator=(const Executable &sSrc);
-		Executable &operator=(Executable &&sSrc);
-
-	public:
-		/*
-			TODO : Place your member function declarations here.
-		*/
-
-	};
+	using Executable = std::vector<Command>;
 }
 
 #endif
