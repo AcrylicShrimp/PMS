@@ -126,6 +126,9 @@
     <ClCompile Include="ConstantDirective.cpp">
       <Filter>PMS\Parsing\Expressions</Filter>
     </ClCompile>
+    <ClCompile Include="ParsingData.cpp">
+      <Filter>PMS\Runtime</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Splitter.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="ConstantDirective.h">
       <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="ParsingData.h">
+      <Filter>PMS\Runtime</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,8 +11,9 @@ namespace PMS::Parsing
 	bool ValueExpression::generateInstruction(TokenIndexer sTokenIndexer, Runtime::Executable &sExecutable, ErrorList &sErrorList)
 	{
 		if (sTokenIndexer.isMatch(TokenType::Identifier))
+		{
+
 			return true;
-
-
+		}
 	}
 }

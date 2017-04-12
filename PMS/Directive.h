@@ -17,35 +17,18 @@ namespace PMS::Parse
 {
 	class Directive
 	{
-	private:
-		/*
-			TODO : Place your field declarations here.
-		*/
-		
+	public:
+		Directive() = delete;
+		Directive(const Directive &sSrc) = delete;
+		Directive(Directive &&sSrc) = delete;
+		~Directive() = delete;
 		
 	public:
-		Directive();
-		Directive(const Directive &sSrc);
-		Directive(Directive &&sSrc);
-		~Directive();
-		/*
-			TODO : Place your other constructors here.
-		*/
-		
+		Directive &operator=(const Directive &sSrc) = delete;
+		Directive &operator=(Directive &&sSrc) = delete;
 		
 	public:
-		Directive &operator=(const Directive &sSrc);
-		Directive &operator=(Directive &&sSrc);
-		/*
-			TODO : Place your other operator overloadings here.
-		*/
-		
-		
-	public:
-		/*
-			TODO : Place your member function declarations here.
-		*/
-		
+
 	};
 }
 
