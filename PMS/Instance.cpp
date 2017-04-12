@@ -8,43 +8,24 @@
 
 namespace PMS::Runtime
 {
-	Instance::Instance(const Environment &sNewEnvironment) :
-		sEnvironment{sNewEnvironment}
+	Instance::Instance(const Instance &sSrc) :
+		sGlobalModule{sSrc.sGlobalModule}
 	{
-		//TODO : Place your implementation of default constructor here.
-		
+		//Empty.
 	}
 	
-	Instance::Instance(const Instance &sSrc)
+	Instance::Instance(Instance &&sSrc) :
+		sGlobalModule{std::move(sSrc.sGlobalModule)}
 	{
-		//TODO : Place your implementation of copy constructor here.
-		
+		//Empty.
 	}
-	
-	Instance::Instance(Instance &&sSrc)
-	{
-		//TODO : Place your implementation of move constructor here.
-		
-	}
-	
-	Instance::~Instance()
-	{
-		//TODO : Place your implementation of destructor here.
-		
-	}
-	
-	/*
-		TODO : Place your other constructors here.
-	*/
-	
 	
 	Instance &Instance::operator=(const Instance &sSrc)
 	{
 		if(&sSrc == this)
 			return *this;
 		
-		//TODO : Place your implementation of copy assignment operator here.
-		
+		this->sGlobalModule = sSrc.sGlobalModule;
 		
 		return *this;
 	}
@@ -54,19 +35,13 @@ namespace PMS::Runtime
 		if(&sSrc == this)
 			return *this;
 		
-		//TODO : Place your implementation of move assignment operator here.
-		
+		this->sGlobalModule = std::move(sSrc.sGlobalModule);
 		
 		return *this;
 	}
 	
-	/*
-		TODO : Place your other operator overloadings here.
-	*/
-	
-	
-	/*
-		TODO : Place your member function definitions here.
-	*/
+	void Instance::runInstance()
+	{
 
+	}
 }

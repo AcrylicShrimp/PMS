@@ -131,14 +131,16 @@
     <ClCompile Include="CastExpression.cpp" />
     <ClCompile Include="CommaExpression.cpp" />
     <ClCompile Include="CompareExpression.cpp" />
+    <ClCompile Include="ConstantDirective.cpp" />
     <ClCompile Include="ConstantExpression.cpp" />
-    <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="Directive.cpp" />
     <ClCompile Include="Expression.cpp" />
     <ClCompile Include="FrontCreaseExpression.cpp" />
     <ClCompile Include="FrontExpression.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="ListExpression.cpp" />
+    <ClCompile Include="Module.cpp" />
     <ClCompile Include="MulExpression.cpp" />
     <ClCompile Include="NotExpression.cpp" />
     <ClCompile Include="OrBitExpression.cpp" />
@@ -167,8 +169,9 @@
     <ClInclude Include="CastExpression.h" />
     <ClInclude Include="CommaExpression.h" />
     <ClInclude Include="CompareExpression.h" />
+    <ClInclude Include="ConstantDirective.h" />
     <ClInclude Include="ConstantExpression.h" />
-    <ClInclude Include="Environment.h" />
+    <ClInclude Include="Directive.h" />
     <ClInclude Include="Executable.h" />
     <ClInclude Include="Expression.h" />
     <ClInclude Include="FrontCreaseExpression.h" />
@@ -176,6 +179,7 @@
     <ClInclude Include="Function.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="ListExpression.h" />
+    <ClInclude Include="Module.h" />
     <ClInclude Include="MulExpression.h" />
     <ClInclude Include="NotExpression.h" />
     <ClInclude Include="OrBitExpression.h" />

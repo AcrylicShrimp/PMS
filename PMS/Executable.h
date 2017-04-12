@@ -43,7 +43,18 @@ namespace PMS::Runtime
 		GTQ,
 
 		NOT,
-		AND
+		AND,
+		OR,
+
+		BNot,
+		BAnd,
+		BXor,
+		BOr,
+		LShift,
+		RShift,
+
+		Increase,
+		Decrease
 	};
 
 	using Executable = std::vector<Instruction>;

@@ -8,8 +8,7 @@
 
 #define _CLASS_PMS_RUNTIME_INSTANCE_H
 
-#include "Environment.h"
-#include "Executable.h"
+#include "Module.h"
 
 #include <cstdint>
 #include <deque>
@@ -27,36 +26,59 @@ namespace PMS::Runtime
 		PMSEntity sLHS;
 		PMSEntity sRHS;
 		PMSStack sStack;
-		const Environment &sEnvironment;
+		Module sGlobalModule;
 		
 	public:
-		Instance(const Environment &sNewEnvironment);
+		Instance() = default;
 		Instance(const Instance &sSrc);
 		Instance(Instance &&sSrc);
-		~Instance();
-		/*
-			TODO : Place your other constructors here.
-		*/
+		~Instance() = default;
 		
 	public:
 		Instance &operator=(const Instance &sSrc);
 		Instance &operator=(Instance &&sSrc);
-		/*
-			TODO : Place your other operator overloadings here.
-		*/
-		
 		
 	public:
-		/*
-			TODO : Place your member function declarations here.
-		*/
-		
+		void runInstance();
 
 	private:
-		void extractOne();
-		void extractTwo();
-
+		inline void pushInt(int64_t nInt);
+		inline void pushReal(double nReal);
+		inline void pushString(const std::u32string sString);
+		inline void makeList();
 	};
+
+	inline void Instance::pushInt(int64_t nInt)
+	{
+		PMSEntity sEntity;
+		sEntity.eType = PMSEntityType::Int;
+		sEntity.sData.nInt = nInt;
+
+		this->sStack.emplace_back(sEntity);
+	}
+
+	inline void Instance::pushReal(double nReal)
+	{
+		PMSEntity sEntity;
+		sEntity.eType = PMSEntityType::Real;
+		sEntity.sData.nReal = nReal;
+
+		this->sStack.emplace_back(sEntity);
+	}
+
+	inline void Instance::pushString(const std::u32string sString)
+	{
+		PMSEntity sEntity;
+		sEntity.eType = PMSEntityType::Real;
+		sEntity.sData.pString = ;
+
+		this->sStack.emplace_back(sEntity);
+	}
+
+	inline void Instance::makeList()
+	{
+
+	}
 }
 
 #endif

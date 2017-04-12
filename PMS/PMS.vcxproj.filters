@@ -117,8 +117,14 @@
     <ClCompile Include="XorBitExpression.cpp">
       <Filter>PMS\Parsing\Expressions</Filter>
     </ClCompile>
-    <ClCompile Include="Environment.cpp">
+    <ClCompile Include="Module.cpp">
       <Filter>PMS\Runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="Directive.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantDirective.cpp">
+      <Filter>PMS\Parsing\Expressions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -221,8 +227,14 @@
     <ClInclude Include="XorBitExpression.h">
       <Filter>PMS\Parsing\Expressions</Filter>
     </ClInclude>
-    <ClInclude Include="Environment.h">
+    <ClInclude Include="Module.h">
       <Filter>PMS\Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="Directive.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantDirective.h">
+      <Filter>PMS\Parsing\Expressions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
