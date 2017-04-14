@@ -12,3 +12,5 @@ tm.foo(); // == testmodule.test1.firsttest.test.foo();
 
 auto &sModule = Environment.addModule(U"testmodule");
 sModule.addModule();
+
+2. Identifier는 항상 ref 타입으로 올릴 것!

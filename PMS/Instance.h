@@ -70,7 +70,7 @@ namespace PMS::Runtime
 	{
 		PMSEntity sEntity;
 		sEntity.eType = PMSEntityType::Real;
-		sEntity.sData.pString = ;
+		//sEntity.sData.pString = ;
 
 		this->sStack.emplace_back(sEntity);
 	}

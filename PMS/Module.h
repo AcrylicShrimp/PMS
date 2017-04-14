@@ -28,7 +28,9 @@ namespace PMS::Runtime
 		List,
 
 		Func,
-		Module
+		Module,
+
+		Reference
 	};
 
 	union PMSData

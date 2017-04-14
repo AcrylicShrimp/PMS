@@ -8,64 +8,35 @@
 
 namespace PMS::Parsing
 {
-	ParsingData::ParsingData()
+	ParsingData::ParsingData(const ParsingData &sSrc) :
+		iIndex{sSrc.iIndex},
+		iEnd{sSrc.iEnd},
+		pCurrentModule{sSrc.pCurrentModule},
+		pModule{sSrc.pModule},
+		pErrorList{sSrc.pErrorList}
 	{
-		//TODO : Place your implementation of default constructor here.
-		
+		//Empty.
 	}
-	
-	ParsingData::ParsingData(const ParsingData &sSrc)
-	{
-		//TODO : Place your implementation of copy constructor here.
-		
-	}
-	
-	ParsingData::ParsingData(ParsingData &&sSrc)
-	{
-		//TODO : Place your implementation of move constructor here.
-		
-	}
-	
-	ParsingData::~ParsingData()
-	{
-		//TODO : Place your implementation of destructor here.
-		
-	}
-	
-	/*
-		TODO : Place your other constructors here.
-	*/
-	
-	
+
 	ParsingData &ParsingData::operator=(const ParsingData &sSrc)
 	{
-		if(&sSrc == this)
+		if (&sSrc == this)
 			return *this;
-		
-		//TODO : Place your implementation of copy assignment operator here.
-		
-		
-		return *this;
-	}
-	
-	ParsingData &ParsingData::operator=(ParsingData &&sSrc)
-	{
-		if(&sSrc == this)
-			return *this;
-		
-		//TODO : Place your implementation of move assignment operator here.
-		
-		
-		return *this;
-	}
-	
-	/*
-		TODO : Place your other operator overloadings here.
-	*/
-	
-	
-	/*
-		TODO : Place your member function definitions here.
-	*/
 
+		this->iIndex = sSrc.iIndex;
+		this->iEnd = sSrc.iEnd;
+		this->pCurrentModule = sSrc.pCurrentModule;
+		this->pModule = sSrc.pModule;
+		this->pErrorList = sSrc.pErrorList;
+
+		return *this;
+	}
+
+	void ParsingData::makeParsingData(const TokenList &sTokenList, ErrorList &sErrorList, Runtime::Module &sTargetModule)
+	{
+		this->iIndex = sTokenList.cbegin();
+		this->iEnd = sTokenList.cend();
+		this->pCurrentModule = this->pModule = &sTargetModule;
+		this->pErrorList = &sErrorList;
+	}
 }
